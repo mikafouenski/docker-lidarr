@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+
+umask 022
+
+cd /opt/Lidarr || exit
+
+exec \
+	s6-setuidgid appuser mono Lidarr.Console.exe \
+	-nobrowser -data=/config
