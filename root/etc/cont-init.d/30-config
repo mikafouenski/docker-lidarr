@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 # cleanup pid if it exists
-[[ -e /config/lidarr.pid ]] && rm -rf /config/lidarr.pid
+[[ -e /config/nzbdrone.pid ]] && rm -rf /config/nzbdrone.pid
 
 # permissions
 chown -R appuser:appuser /opt/Lidarr
