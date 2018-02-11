@@ -3,20 +3,21 @@ MAINTAINER mikafouenski
 
 ENV XDG_CONFIG_HOME="/config/xdg"
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-    apt install -y --no-install-recommends git nodejs && \
-    git clone https://github.com/lidarr/Lidarr.git && \
+ADD maxpeers.patch /
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+    apt install -y --no-install-recommends git nodejs yarn patch && \
+    git clone https://github.com/lidarr/Lidarr.git --recursive --depth 1 && \
     cd Lidarr && \
-    npm install && \
-    git submodule update --init && \
-    export MONO_IOMAP="case" && \
-    mono ./tools/nuget/nuget.exe restore ./src/Lidarr.sln && \
-    xbuild ./src/Lidarr.sln /t:Configuration=Release /t:Build && \
-    node ./node_modules/gulp/bin/gulp.js build && \
-    cp -a _output /opt/Lidarr && \
-    apt remove -y git nodejs && \
+    patch src/NzbDrone.Core/DecisionEngine/DownloadDecisionComparer.cs /maxpeers.patch && \
+    ./build.sh && \
+    cp -a _output_linux /opt/Lidarr && \
+    yarn cache clean && \
+    apt remove -y git nodejs yarn patch && \
     apt autoremove -y && \
-    rm -rf /Lidarr /tmp/* /var/lib/apt/lists/* /var/tmp/*
+    rm -rf /maxpeers.patch /root/* /Lidarr /tmp/* /var/lib/apt/lists/* /var/tmp/* /var/cache/*
 
 COPY root/ /
 

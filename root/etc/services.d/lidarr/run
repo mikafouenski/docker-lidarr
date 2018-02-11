@@ -5,5 +5,5 @@ umask 022
 cd /opt/Lidarr || exit
 
 exec \
-	s6-setuidgid appuser mono Lidarr.Console.exe \
+	s6-setuidgid appuser mono Lidarr.exe \
 	-nobrowser -data=/config

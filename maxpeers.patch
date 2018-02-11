@@ -1,0 +1,14 @@
+--- DownloadDecisionComparer.cs.lidarr	2018-02-09 21:58:06.178366345 +0100
++++ DownloadDecisionComparer.cs.lidarr2	2018-02-11 13:41:41.973287675 +0100
+@@ -22,10 +22,10 @@
+         {
+             var comparers = new List<CompareDelegate>
+             {
++                ComparePeersIfTorrent,
+                 CompareQuality,
+                 CompareLanguage,
+                 CompareProtocol,
+-                ComparePeersIfTorrent,
+                 CompareAlbumCount,
+                 CompareAgeIfUsenet,
+                 CompareSize
